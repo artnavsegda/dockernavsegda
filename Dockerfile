@@ -1,6 +1,6 @@
 # build
-FROM alpine:latest AS build
-RUN apk add --no-cache build-base cmake git json-c-dev
+FROM alpine:latest AS builder
+RUN apk add --no-cache build-base cmake git json-c-dev linux-headers
 WORKDIR /src
 
 RUN git clone --depth 1 https://git.openwrt.org/project/libubox.git \
