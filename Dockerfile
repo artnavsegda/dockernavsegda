@@ -27,3 +27,4 @@ RUN git clone --depth 1 https://github.com/jow-/ucode.git \
 # runtime
 FROM alpine:latest
 RUN apk add --no-cache lighttpd lighttpd-mod_scgi
+COPY --from=builder /stage/ /
