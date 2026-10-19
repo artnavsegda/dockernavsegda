@@ -19,7 +19,7 @@ RUN git clone --depth 1 https://git.openwrt.org/project/ubus.git \
 
 RUN git clone --depth 1 https://github.com/jow-/ucode.git \
  && cmake -S ucode -B ucode/build -DCMAKE_INSTALL_PREFIX=/usr \
-      -DUBUS_SUPPORT=ON -DULOOP_SUPPORT=ON \
+      -DUBUS_SUPPORT=ON -DULOOP_SUPPORT=ON -DSOCKET_SUPPORT=ON
       -DUCI_SUPPORT=OFF -DRTNL_SUPPORT=OFF -DNL80211_SUPPORT=OFF \
  && cmake --build ucode/build -j"$(nproc)" \
  && DESTDIR=/stage cmake --install ucode/build
