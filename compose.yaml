@@ -1,0 +1,8 @@
+services:
+  web:
+    build: .
+    image: artnavsegda
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./www:/var/www
