@@ -32,3 +32,4 @@ COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
 COPY *.cgi /var/www/
 RUN chmod +x /var/www/*.cgi
 EXPOSE 8080
+ENTRYPOINT ["lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]
