@@ -28,3 +28,4 @@ RUN git clone --depth 1 https://github.com/jow-/ucode.git \
 FROM alpine:latest
 RUN apk add --no-cache lighttpd json-c
 COPY --from=builder /stage/ /
+COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
