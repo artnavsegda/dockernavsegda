@@ -29,3 +29,6 @@ FROM alpine:latest
 RUN apk add --no-cache lighttpd json-c
 COPY --from=builder /stage/ /
 COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
+COPY *.cgi /var/www/
+RUN chmod +x /var/www/*.cgi
+EXPOSE 8080
