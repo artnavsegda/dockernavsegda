@@ -1,0 +1,15 @@
+#!/bin/sh
+# One-time container tweaks, run after config_generate on first boot:
+# no DHCP/RA towards the docker network, and no ntpd since the clock belongs
+# to the host (setting it needs CAP_SYS_TIME).
+
+uci -q batch <<UCI
+set dhcp.lan.ignore='1'
+set dhcp.lan.dhcpv4='disabled'
+set dhcp.lan.dhcpv6='disabled'
+set dhcp.lan.ra='disabled'
+set system.ntp.enabled='0'
+commit
+UCI
+
+exit 0

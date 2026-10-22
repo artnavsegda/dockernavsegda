@@ -1,0 +1,40 @@
+#!/bin/sh
+# Container entrypoint: grab the address Docker gave eth0 before procd/netifd
+# take over, put it on the "lan" interface, then become /sbin/init.
+# Runs on every start, so a new IP after `docker compose up` is picked up.
+# (Left alone, config_generate would put eth0 into br-lan at 192.168.1.1
+# and cut the container off.)
+
+addr=$(ip -4 -o addr show dev eth0 | awk '{print $4; exit}')
+gw=$(ip -4 route show default | awk '{print $3; exit}')
+dns=$(awk '/^nameserver/ {print $2; exit}' /etc/resolv.conf)
+
+if [ -n "$addr" ]; then
+	# first boot: config_generate only fills in a missing file, so seed one
+	[ -s /etc/config/network ] || cat > /etc/config/network <<EOF
+config interface 'loopback'
+	option device 'lo'
+	option proto 'static'
+	option ipaddr '127.0.0.1'
+	option netmask '255.0.0.0'
+
+config interface 'lan'
+EOF
+
+	mkdir -p /tmp/.uci
+	uci -q batch <<EOF
+set network.lan.device='eth0'
+set network.lan.proto='static'
+delete network.lan.ipaddr
+delete network.lan.netmask
+delete network.lan.gateway
+delete network.lan.dns
+delete network.lan.ip6assign
+add_list network.lan.ipaddr='$addr'
+set network.lan.gateway='$gw'
+add_list network.lan.dns='${dns:-$gw}'
+commit network
+EOF
+fi
+
+exec /sbin/init "$@"

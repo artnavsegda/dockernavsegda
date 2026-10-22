@@ -1,0 +1,12 @@
+{
+	"model": {
+		"id": "openwrt,docker",
+		"name": "OpenWrt Docker"
+	},
+	"network": {
+		"lan": {
+			"device": "eth0",
+			"protocol": "static"
+		}
+	}
+}

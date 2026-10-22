@@ -6,3 +6,16 @@ services:
       - "8080:8080"
     volumes:
       - ./www:/var/www
+  openwrt:
+    build: ./openwrt
+    image: openwrt-ucode:24.10
+    hostname: OpenWrt
+    cap_add: [NET_ADMIN, NET_RAW, SYS_ADMIN]
+    tmpfs:
+      - /tmp:exec,mode=1777
+    ports:
+      - "8081:80"
+      - "2222:22"
+    volumes:
+      - ./openwrt/scripts:/root/scripts
+      - ./openwrt/www:/www

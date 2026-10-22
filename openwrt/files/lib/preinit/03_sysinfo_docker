@@ -1,0 +1,17 @@
+# Mock board identity for the container: take model id/name from the shipped
+# /etc/board.json, so `ubus call system board` reports board_name/model like
+# a real device. Runs after the stock sysinfo hooks and overrides them.
+
+do_sysinfo_docker() {
+	local id name
+
+	id=$(jsonfilter -i /etc/board.json -e '@.model.id')
+	name=$(jsonfilter -i /etc/board.json -e '@.model.name')
+	[ -n "$id" ] || return
+
+	mkdir -p /tmp/sysinfo
+	echo "$id" > /tmp/sysinfo/board_name
+	echo "$name" > /tmp/sysinfo/model
+}
+
+boot_hook_add preinit_main do_sysinfo_docker
