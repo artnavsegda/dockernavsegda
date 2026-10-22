@@ -1,0 +1,23 @@
+{
+	"dev-full": {
+		"description": "Development only: full access to ubus, uci and files for logins granted '*' in /etc/config/rpcd (root)",
+		"read": {
+			"ubus": {
+				"*": [ "*" ]
+			},
+			"uci": [ "*" ],
+			"file": {
+				"*": [ "read", "list", "stat", "exec" ]
+			}
+		},
+		"write": {
+			"ubus": {
+				"*": [ "*" ]
+			},
+			"uci": [ "*" ],
+			"file": {
+				"*": [ "write", "exec" ]
+			}
+		}
+	}
+}
